@@ -4,9 +4,10 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{booktabs}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{authblk}
-\title{INDINF02 - INTERCOMMUNICATION (SSI/SPI)}
+\title{\bf INDINF02 - INTERCOMMUNICATION (SSI/SPI)}
 \author{Janeczek Christian, Mair Wolfgang} 
 \affil{IT Department TGM, Vienna}
 \date{\today{}, Vienna}
@@ -19,33 +20,86 @@
 \newpage
 
 \section{Task Description}
-\newpage
+Work in group of 2 and implement a SSI/SPI Master-Slave communication between two TI Tiva C Launchpads. It should be possible to toggle the green and red led on the master with the buttons of the slave device. Don't forget to de-bounce the buttons and ensure that only if the button is pressed for exactly 2 seconds the led should be toggled.\cite{SPI_SSI}
+
 
 \section{Technology}
-\subsection{Description}
+\subsection{SPI}
+SPI, which means Serial Peripheral Interface, is an Interface bus which is able to send data between micro-controllers and small peripherals. To do so it uses a separate clock line and data-lines. It also has a select line in order to be able to communicate with more than one device (slave-select).\cite{SPI_expl}
+
+
+\subsection{SSI}
+Beispiel Text
 \newpage
 
 \section{Design Consideration}
-\subsection{Requirement 1}
-\subsection{Requirement 2}
-\subsection{Requirement 3}
-\subsection{Requirement 4}
+\subsection{Nedded functions}
+We use interrupts to reduce the amount of work for the master. We also need a timer to be able to execute the task at "exact" 2 seconds. After talking with the Prof. Borko about this feature he revoked the feature and changed it to about 2 seconds so a normal timer would work. We are going to use SSI to send the needed information and data.
+\subsection{Solution}
+In our design the master device will wait for a button to be pressed. The button-press triggers an interrupt which starts a timer. If the button-state (pressed) isn't going to be changed after about 2 seconds the timer will trigger another interrupt which sends data to the slave-device. After the slave receives the data he changes the state of his current led (on-off / off-on).
+\subsection{Data definition}
+The cable we are going to use only has a bandwidth of 4 to 16 Bits. This is why we need to think about what information we are going to send to the slave.
+
+We do need a Device ID (Which device is in which row) - max. (8) devices - 3 Bits needed
+We also want to transmit the port and pin info - 3 Bits for ports (6) – 3 Bits for pins (8)
+The state definition of the lamp is also needed in this project - 1 Bit (2) to toggle the lamp
+
+We also would be able to send the timer data, but we decided that the timer will run on the master side.
+
+So we need 10 bits to send the slave the information he needs.
+
 \newpage
 
 \section{Apportionment of work with effort estimation}
-\newpage
 
-\section{Final Time Apportionment}
+\subsection{Task execution time}
+\begin{table}[h]
+\begin{tabular}{@{}|c|c|c|c|@{}}
+\toprule
+\textbf{Name}         &\textbf{Task}         	 & \textbf{Date} & \textbf{Duration} \\ \midrule
+Wolfgang Mair         &Preparing the environment & 13-10-2014    & 1h                \\ \midrule
+Christian Janeczek    &Preparing the environment & 13-10-2014    & 1h                \\ \midrule
+Wolfgang Mair         &Documentation             & 14510-2014    & 1h             \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\bf Time worked in total = 3 h
+
+\subsection{Estimated Work}
+
+\begin{table}[h]
+\begin{tabular}{@{}|c|c|c|@{}}
+\toprule
+\textbf{Task}         & \textbf{Estimated Time} & \textbf{Actual Time} \\ \midrule
+Preparing environment & 1/2h                    & ?h                   \\ \midrule
+Information gathering & 4h                      & ?h                   \\ \midrule
+Coding Master         & 2h                      & ?h                   \\ \midrule
+Coding Slave          & 2h                      & ?h                   \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\bf Time expected in total = 8.5 h
+
 \newpage
 
 \section{Task Execution}
+\subsection{Preparing environment}
+Preparing an environment in which the micro-controller can be programmed and tested. In this case the environment is a virtual machine with Linux as it's main system.
+The whole environment should be tested with programs we created in the past.
+
+\subsection{Gathering Information (Board,SSI,...)}
+Gather information about SPI/SSI, which means to look for possible upcoming problems and some easy examples to learn from. Also gathering specific information about the micro-controller. In this exercise we need the specific ports and data of each controller to be able to create a master and a slave code for the devices.
+
+\subsection{Coding Master}
+Code snippets and special parts of the code
+\subsection{Coding Slave}
+Code snippets and special parts of the code
 \newpage
 
 \section{Test Report}
 \newpage
 
-\begin{thebibliography}{999}
-	\bibitem {Zitat01} Zitate leicht gemacht
-\end{thebibliography}
+\bibliographystyle{IEEEtran}
+\bibliography{References}
 
 \end{document}
